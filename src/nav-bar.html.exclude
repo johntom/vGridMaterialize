@@ -1,0 +1,205 @@
+<template>
+    <!--<link href="http://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+-->
+
+    <style>
+        .backcolor {
+            /*color: #EE6E73;*/
+            color: #e0f2f1;
+        }
+        
+        h6b {
+            font-size: 1.15rem;
+            line-height: 110%;
+            margin: 0.5rem 0 0.4rem 0;
+            color: #1a237e;
+            /*rgb(216, 233, 242);*/
+        }
+        
+        a.popular-post-title {
+            font: 400 15px Lato;
+            /*color: rgba(0, 0, 0, 0.74) !important;*/
+            color: rgb(241, 240, 245);
+            !important;
+            letter-spacing: 0.5px;
+        }
+        
+        a.main-theme-color {
+            /*color: #009688;*/
+            color: rgb(241, 240, 245);
+        }
+          body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+      
+        
+    </style>
+
+    <!-- grey lighten-2 -->
+    <div class="container brown lighten-4">
+          <a href="#" data-activates="nav-mobile" class="button-collapse top-nav waves-effect waves-light circle hide-on-large-only">
+            <i class="mdi-navigation-menu"></i>
+        </a>
+    </div>
+    <div class="navbar-fixed">
+        <nav>
+
+            <!-- 74 height of nav #375A7F -->
+            <div class="nav-wrapper navbar-fixed-top" style="height:80px;background-color:slategrey; ">
+
+                <a href="#" class="brand-logo waves-effect waves-light padding-top=20px  margin-left=80px ">
+     &nbsp;${router.title}
+         </a>
+                <!--<style="background-image: url('./images/blueprint-wealth-advisors-header.jpg')"/>-->
+
+                <a href="#" data-activates="mobile-demo" class="button-collapse " materialize="sidenav"><i class="mdi-navigation-menu"></i></a>
+                <!--<a href="#" class="brand-logo"><img src="images/BCS Logo-High ResBlue2.jpg" style="max-height:63px"  id="personliglogo"></img> && roleid<4-->
+                <!--<div show.bind="route.auth===true"> -->
+
+                <a href="#" class="brand-logo"><img src="images/BCS Logo-High slategrey.jpg" style="max-height:63px" id="personliglogo"></img>
+
+                    <!--<ul class="right hide-on-med-and-down">
+            <li      repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
+               <a href.bind="route.href" class="waves-effect waves-light ">${route.title} </a> 
+            </li>
+          </ul>-->
+
+
+                    <ul class="right hide-on-med-and-down">
+                        <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+                             <!--<li repeat.for="row of router.navigation | authFilter: isAuthenticated" class="${row.isActive ? 'active' : ''}">-->
+                       <a href.bind="row.href" class="waves-effect waves-light ">${row.title} </a>
+                        </li>
+                    </ul>
+
+                    <ul if.bind="!isAuthenticated" class="nav navbar-nav navbar-right">
+                        <li><a href="/#/login">Login</a></li>
+                        <li><a href="/#/signup">Sign up</a></li>
+                    </ul>
+                    <ul if.bind="isAuthenticated" class="nav navbar-nav navbar-right">
+                        <li><a href="/#/profile">Profile</a></li>
+                        <li><a href="/#/logout">Logout</a></li>
+                    </ul>
+
+                    <ul class="side-nav" id="mobile-demo">
+                        <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}">
+                            <a href.bind="route.href" class="waves-effect waves-light button-collapse" style="margin-right:10px">${route.title}</a></br>
+                        </li>
+                    </ul>
+            </div>
+        </nav>
+    </div>
+   
+    <div class="page-host" style="background-color:slategrey">
+
+        <router-view></router-view>
+        <footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Footer Content</h5>
+                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+        
+        <!--<footer>
+             <div class="footer-copyright3" style="height:80px">
+                <div class="container">
+                    <br/>
+                    <h6b class="header grey-text text-lighten-4"> © 2015 Brookbridge Inc.,Copyright &nbsp; &nbsp;
+                        <span>43 Warren Street
+          New York, NY 10007 </span> &nbsp; &nbsp;
+                        <span>212-406-5920 (p) </span> &nbsp; &nbsp;
+                        <span>212-406-5921 (f)</span></h6b>
+                    <p>&nbsp;</p>
+                    <p class="flow-text-bold grey-text text-lighten-4">
+                        Disclaimer: The information on the web site is deemed reliable, however, please verify all data with Brookbridge prior to
+                        any formal transactions.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+        </footer>-->
+
+    </div>
+
+</template>
+
+
+
+<!--<template bindable="router">  
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">${router.title}</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li repeat.for="route of router.navigation" class="${route.isActive ? 'active' : ''}"><a href.bind="route.href">${route.title}</a></li>
+      </ul>
+
+      <ul class="side-nav" id="mobile-demo">
+        <li repeat.for="route of router.navigation"><a href.bind="route.href">${route.title}</a></li>
+      </ul>
+
+    </div>
+  </nav>
+</template>  -->
+
+
+<!--<template bindable="router">
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse">
+        <span class="sr-only">Toggle Navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <i class="fa fa-home"></i>
+        <span>${router.title}</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="skeleton-navigation-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+          <a data-toggle="collapse" data-target="#skeleton-navigation-navbar-collapse.in" href.bind="row.href">${row.title}</a>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="loader" if.bind="router.isNavigating">
+          <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>-->

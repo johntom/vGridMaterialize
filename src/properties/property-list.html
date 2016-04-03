@@ -1,0 +1,1069 @@
+<template>
+  <!--<require from="./modal1.html"></require>-->
+  <style>
+    .flow-text {
+      font-weight: 400;
+      font-size: 0.8em;
+    }
+    
+    .flow-text-bold {
+      font-weight: bold;
+      font-size: 0.8em;
+    }
+    
+    .btn-default {
+      color: #333;
+      background-color: #fff;
+      border-color: #ccc;
+    }
+    
+    .btn-primary {
+      color: #fff;
+      background-color: #428bca;
+      border-color: #357ebd;
+    }
+    
+    .btn-primary:hover {
+      background-color: orange;
+    }
+    
+    .btn-success {
+      color: #fff;
+      background-color: #5cb85c;
+      border-color: #4cae4c;
+    }
+    
+    .btn-warning {
+      color: #fff;
+      background-color: #f0ad4e;
+      border-color: #eea236;
+    }
+    
+    .btn-info {
+      color: #fff;
+      background-color: #5bc0de;
+      border-color: #46b8da;
+    }
+    
+    .btn-danger {
+      color: #fff;
+      background-color: #d9534f;
+      border-color: #d43f3a;
+    }
+    
+    pre[class*="language-"] {
+      padding: 25px 12px 7px 12px;
+      border: solid 1px rgba(51, 51, 51, 0.12);
+    }
+    
+    h4 {
+      color: #212121;
+      /*375A7F;*/
+      font-size: 2.00rem;
+      line-height: 110%;
+      margin: 1.14rem 0 0.912rem 0;
+    }
+    
+    h5 {
+      color: #212121;
+      /*375A7F;*/
+      font-size: 1.30rem;
+      line-height: 110%;
+      margin: 1.14rem 0 0.912rem 0;
+    }
+    
+    h6 {
+      color: #212121;
+      /*375A7F;*/
+      font-size: .90rem;
+      line-height: 110%;
+      font-style: bold;
+    }
+    
+    .card.medium .card-content {
+      height: 350px;
+    }
+    
+    .card.large .card-content {
+      height: 400px;
+    }
+    
+    [type="checkbox"] + label {
+      /* overide mat... position: relative;*/
+      padding-left: 25px;
+    }
+    
+    p {
+      /*font-size: 1.00rem;*/
+      line-height: 17%;
+      /*20%;*/
+    }
+    
+    .btn,
+    .btn-large,
+    .btn-flat {
+      padding: 0 1rem;
+      /*mize= 2rem*/
+    }
+  </style>
+  <!--<link rel="stylesheet" href="styles/materialize.css">-->
+  <require from="../vGrid/v-grid.js"></require>
+  <require from="../vGrid/v-grid.css"></require>
+
+  <section class="au-animate section no-pad-bot">
+    <require from="../resources/my-filter"></require>
+    <require from="../resources/my-filter1"></require>
+    <require from="../value-converters/filter-by-name"></require>
+    <require from="../value-converters/sort"></require>
+    <require from="../value-converters/sortname"></require>
+    <require from="../value-converters/filter"></require>
+    <require from="../value-converters/filterdynamic"></require>
+
+    <require from="../resources/custom-select"></require>
+    <require from="../resources/filtercb"></require>
+    <require from="../resources/date-format"></require>
+    <require from="../resources/number-format"></require>
+    <require from="../resources/materialize"></require>
+
+
+
+    <link href="https://raw.githubusercontent.com/t0m/select2-bootstrap-css/bootstrap3/select2-bootstrap.css" rel="stylesheet">
+    <div class=" grey lighten-2">
+      <div class="container">
+        <div class="row">
+          <h4 class="left col s12">${heading} &nbsp; ${loginusername}
+          </h4>
+        </div>
+        <!-- Pullup Card -->
+
+        <div class="row">
+
+          <div repeat.for="building of buildings">
+            <div class="card hoverable medium">
+              <h5 class="header">&nbsp;${building.Address} / ${building.Manager}</h5>
+              <div class="card-image">
+                <div class="col s4">
+                  <img src="http://act.brookbridgeinc.com/Content/UserUploadFiles/Buildings/${building.ImageName}" onerror="this.src='https://www.google.com.br/logos/2012/montessori-res.png';">
+
+                </div>
+                <div class="col s8">
+                  <div class="col s6">
+                    <div show.bind="$parent.roleid<4">
+                      <p><b>Floors</b> ${building.TotalFloors}</p>
+                      <p><b>Year Built</b> ${building.BuiltDate | dateFormat:'M/D/YYYY' }</p>
+                      <p><b>GBA </b>${building.GBA}</p>
+                      <p><b>Zoning District</b> ${building.ZoningDistrict}</p>
+
+                      <p><b>BIN </b>
+                        <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="open DOB bin report" target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/PropertyProfileOverviewServlet?requestid=4&bin=${building.BIN}">${building.BIN}</a></p>
+
+
+
+
+                      <p><b>Landmark </b>${building.LandMark | location}</p>
+                      <p><b>Historic Block</b> ${building.HistoricBlock}</p>
+                      <p><b>Easments </b>${building.Easments}</p>
+                      <p><b>Far</b> ${building.Far}</p>
+                      <p><b>PA Permits</b> ${building.PAPermits}</p>
+                      <p><b>Illiminated Sign Permit</b> ${building.IlliminatedSignPermit}</p>
+                      <p><b>Tax Block </b>${building.BlockNumber}&nbsp;
+                      <b>Tax Lot </b>${building.LotNumber}</p>
+                   
+                    </div>
+                  </div>
+                  <div class="col s6">
+                       
+                    <div show.bind="$parent.roleid<4">
+                      <p><b>Comm Brd </b>${building.CBNumber}</p>
+                      <p><b>Complaints Open</b>: ${building.ComplaintsOpen}
+
+
+                        <a show.bind="building.ComplaintsOpen!==0" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="DOB/Complaints Website"
+                        target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/ComplaintsByAddressServlet?requestid=3&allbin=${building.BIN}">Complaints</a></p>
+
+
+                      </p>
+                      <p><b>CO Status</b>: ${building.COStatusId | status }</p>
+                      <p><b>Facade Status</b>: ${building.FacadeStatus}</p>
+                      <p><b>Facade Inspection</b>: ${building.FacadeInspection}</p>
+                      <p><b>One Year Elevator</b>: ${building.OneYearElevator}</p>
+                      <p><b>Five Year Elevator</b>: ${building.FiveYearElevator}</p>
+
+                      <span show.bind="building.Violation===1">
+                      <p><b>Open DOB Violations</b>:${building.ViolationsDOBOpen}
+
+                   
+<a show.bind="building.ViolationsDOBOpen!==0" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Open DOB Violations"
+                       click.delegate="$parent.modalCodeDOB(building)">BCS Report</a></p>
+
+                      <!--<p><b>Open ECB Violations </b>: ${building.ViolationsECBOpen}</p>-->
+
+                      <p><b>Open ECB Violations</b>:${building.ViolationsECBOpen}
+
+                        <!--<a disabled.bind="building.ViolationsECBOpen===0" class="s3 btn-small btn-primary waves-effect waves-orange tooltipped" data-position="bottom"
+                        data-delay="50" data-tooltip="${building.ViolationsECBOpen}  Open ECB  Violations" click.trigger="$parent.modalCodeECB(building)">&nbsp;${building.ViolationsECBOpen}&nbsp;</a></p>-->
+                        <a show.bind="building.ViolationsECBOpen!==0" class="s3 btn-small btn-primary waves-effect waves-orange tooltipped" data-position="bottom"
+                        data-delay="50" data-tooltip="${building.ViolationsECBOpen}  Open ECB  Violations" click.trigger="$parent.modalCodeECB(building)">bcs report</a></p>
+
+                    
+                    
+                    </span>
+
+                      <span show.bind="building.Violation===0">
+                      <p><b>Open DOB Violations</b>:${building.openecb}
+
+                        <a show.bind="building.openecb!==0" class="s3 btn-small btn-primary waves-effect waves-orange tooltipped" data-position="bottom"
+                        data-delay="50" data-tooltip="${building.openecb} Please enquire to Brookbridge about this option"></a></p>
+
+                    
+                      <p><b>Open ECB Violations</b>:${building.opendob}
+
+                         <a show.bind="building.opendob!==0" class="s3 btn-small btn-primary waves-effect waves-orange tooltipped" data-position="bottom"
+                        data-delay="50" data-tooltip="${building.opendob} Please enquire to Brookbridge about this option" ></a></p>
+ 
+                    </span>
+
+                      <p><b>CPC Covenent </b>: ${building.CPCCovenent | location }
+                        <a disabled.bind="building.CPCCovenent!==YES" class="s3 btn-small btn-primary waves-effect waves-orange tooltipped" data-position="bottom"
+                        data-delay="50" data-tooltip="${building.CPCCovenent}  Open CPCCovenent PDF When available" xlick.trigger="$parent.openpdf(building)"></a>
+                      </p>
+
+
+                      <p><b>Violation Client Option</b>:${building.Violation | location}
+
+
+
+                    </div>
+                    <!--end of role-->
+                  </div>
+
+                </div>
+                <!--<p class="flow-text-bold">
+              Disclaimer: The information on the web site is deemed reliable, however, please verify all data with Brookbridge prior to any formal transactions.\
+              </p>-->
+
+              </div>
+
+              <div class="card-content">
+
+
+
+              </div>
+              <div class="card-action">
+                <div class="col s5">
+                  <h5>Brookbridge Reports </h5></div>
+                <div class="col s7">
+                </div>
+                <!--<div show.bind="$parent.roleid<4">-->
+                <div show.bind="roleid<4">
+                  <h5>DOB Links</h5></div>
+                <div show.bind="roleid>3">
+                  <h5>&nbsp;</h5></div>
+                <!--show.bind="${building.ViolationsECBOpen}"-->
+                <div show.bind="roleid<4">
+                  <!--${building.ViolationsDOBOpen} ${building.Violation}-->
+                  <div class="col s5"> <span show.bind="building.Violation===1">
+                 <a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Status report" click.delegate="$parent.modalCode(building)">Status</a>
+                    <span show.bind="building.ViolationsECBOpen!==0"> <a  class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="${building.ViolationsECBOpen} Open ECB Violations" click.delegate="$parent.modalCodeECB(building)">ECB Violations</a></span>
+
+                    <a show.bind="building.ViolationsDOBOpen!==0" class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="${building.ViolationsDOBOpen}  Open DOB Violations"
+                    click.delegate="$parent.modalCodeDOB(building)">DOB Violations</a>
+                    </span>
+
+                    <a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Drawings report" click.delegate="$parent.modalCodeDraw(building)">Drawings</a>
+                    <a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Charts report" click.delegate="$parent.modalCodeChart(building)">Charts</a>
+
+                    <!--<a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Charts report" click.delegate="$parent.modalCodeChart2(building)">Charts2</a>-->
+                  </div>
+                </div>
+                <div show.bind="roleid===6">
+
+                  <a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Drawings report" click.delegate="$parent.modalCodeDraw(building)">Drawings</a>
+
+                </div>
+                <!--<div show.bind="roleid===5">
+      tenenat special status report filter by tenant
+                    <div class="col s5"> <a class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Status report" click.delegate="$parent.modalCode(building)">Status</a>
+                    <span show.bind="building.ViolationsECBOpen!==0"> <a  class="s3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="${building.ViolationsECBOpen} Open ECB Violations" click.delegate="$parent.modalCodeECB(building)">ECB Violations</a></span>
+              
+                   </div>-->
+                <div class="col s7">
+                  <div show.bind="roleid<4">
+                    </hr>
+                    <!--<a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="ECB Website"
+                  target='_blank' click.delegate="$parent.modalArticle(building)">ECB</a>-->
+
+
+
+                    <a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="DOB Violations"
+                    target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/ActionsByLocationServlet?requestid=3&allbin=${building.BIN}&allinquirytype=BXS4OCV3&stypeocv3=V">DOB</a>
+                    <a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="ECB Violations"
+                    target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/ECBQueryByLocationServlet?requestid=1&allbin=${building.BIN}">ECB</a>
+                    <a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="DOB/Facade"
+                    target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/FacadesByLocationServlet?requestid=3&allbin=${building.BIN}">Facade</a>
+
+                    <a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="DOB/Complaints"
+                    target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/ComplaintsByAddressServlet?requestid=3&allbin=${building.BIN}">Complaints</a>
+
+                    <a class="btn btn-primary waves-effect waves-lightd tooltipped" data-position="bottom" data-delay="50" data-tooltip="Certificate of Occupancy"
+                    target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/COsByLocationServlet?requestid=1&allbin=${building.BIN}">C of O</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Pullup Card -->
+
+
+
+
+        <!-- <modal101>  -->
+ <div id="modal101" class="modal modal-fixed-footer">
+          <div class="modal-content">
+
+            <div class="row">
+              <div class="col s3">
+
+                <span style='color:#c7c0c5 '> m101</span>
+
+              </div>
+              <div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " show.bind="showingStatus" style="width:165px" click.delegate="filterStatus( )">FilterStage </a>
+              </div>
+
+              <div class="col s3">
+
+                <a class="waves-effect waves-light btn btn-BB " style="width:205px" click.delegate="checkAllStages()">${statusText} </a>
+
+
+              </div>
+            </div>
+            <div show.bind="showingStatus" class="section--blue">
+              <form role="form">
+
+                <div class="row ">
+                  <div class="col s10">
+                    Filter Stages:
+                  </div>
+                  <div class="col s10">
+                    <span repeat.for="dept of departments">
+                    <input type="checkbox" id="${dept.ProjectStatusId}" checked.bind="dept.tf" />
+                   
+                    <label for="${dept.ProjectStatusId}"> ${dept.ProjectStatus} &nbsp;&nbsp;&nbsp;&nbsp; </label>
+                    </label>
+                  </span>
+
+                  </div>
+                </div>
+
+
+              </form>
+            </div>
+           
+  <!--<v-grid
+        style="position:relative;margin-left:25px;width:%; height:500px"
+        row-height="25"
+        header-height="50"
+        resizable-headers="true"
+        sortable-headers="true"
+        sort-on-header-click="true"
+        header-filter="true"
+        header-filter-onkeydown="true"
+        header-filter-not-to="phone"
+        header-filter-top="true"
+        multi-select="true"
+        config="current-entity.bind:myCurrentEntity; collection.bind:lists ">
+    <v-grid-row>
+        <v-grid-col col-width="150" attribute="Floors"   header="Floors"    default-filter=">=" read-only="true"></v-grid-col>
+        <v-grid-col col-width="150" attribute="Projects"    header="Projects"     default-filter="*="                 ></v-grid-col>
+        <v-grid-col col-width="160" attribute="Description" header="Description"  default-filter="="                  ></v-grid-col>
+        <v-grid-col col-width="150" attribute="doccount"   header="Stage"    default-filter="*"                  ></v-grid-col>
+        <v-grid-col col-width="160" attribute="BCSNumber"   header="BCSNumber"    default-filter="=*"                 ></v-grid-col>
+        <v-grid-col col-width="160" attribute="ProjectStartDate"   header="StartDate"    default-filter="=*"                 ></v-grid-col>
+      
+    </v-grid-row>
+</v-grid>-->
+          
+        <v-grid
+        style="position:relative;margin-left:25px;width:%; height:500px"
+        row-height="25"
+        header-height="50"
+        resizable-headers="true"
+        sortable-headers="true"
+        sort-on-header-click="true"
+        header-filter="true"
+        header-filter-onkeydown="true"
+        header-filter-not-to="phone"
+        header-filter-top="true"
+        multi-select="true"
+        config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
+    <v-grid-row>
+        <v-grid-col col-width="150" attribute="index"   header="Index"    default-filter=">=" read-only="true"></v-grid-col>
+        <v-grid-col col-width="150" attribute="name"    header="Name"     default-filter="*="                 ></v-grid-col>
+        <v-grid-col col-width="160" attribute="country" header="Country"  default-filter="="                  ></v-grid-col>
+        <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
+        <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
+    </v-grid-row> 
+
+
+          </div>
+          <div class="modal-footer">
+
+           
+            <span class="col s12">
+            <h4>
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+
+
+            </span>
+
+          </div>
+        </div>
+        <div id="modal101Production" class="modal modal-fixed-footer">
+          <div class="modal-content">
+
+            <div class="row">
+              <div class="col s3">
+
+                <span style='color:#c7c0c5 '> m101</span>
+
+              </div>
+              <div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " show.bind="showingStatus" style="width:165px" click.delegate="filterStatus( )">FilterStage </a>
+              </div>
+
+              <div class="col s3">
+
+                <a class="waves-effect waves-light btn btn-BB " style="width:205px" click.delegate="checkAllStages()">${statusText} </a>
+
+
+              </div>
+            </div>
+            <div show.bind="showingStatus" class="section--blue">
+              <form role="form">
+
+                <div class="row ">
+                  <div class="col s10">
+                    Filter Stages:
+                  </div>
+                  <div class="col s10">
+                    <span repeat.for="dept of departments">
+                    <input type="checkbox" id="${dept.ProjectStatusId}" checked.bind="dept.tf" />
+                   
+                    <label for="${dept.ProjectStatusId}"> ${dept.ProjectStatus} &nbsp;&nbsp;&nbsp;&nbsp; </label>
+                    </label>
+                  </span>
+
+                  </div>
+                </div>
+
+
+              </form>
+            </div>
+
+            <table class="bordered hoverable table-responsive header grey lighten-1 tooltipped" data-position="bottom" data-delay="50"
+            data-tooltip='${headingModal}'>
+              <thead>
+                <tr>
+                  <th>Floors</th>
+                  <th>Projects</th>
+                  <th>Description</th>
+
+                  <th>Stage</th>
+                  <th># of Docs</th>
+                  <th>BCSNumber</th>
+                  <th>StartDate</th>
+                  <th>Documents</th>
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+                <tr repeat.for="list of lists | sort:'BCSNumber':'ascending' ">
+                  <td>${list.Floors}</td>
+                  <td>
+                    <a show.bind="list.jobnocount!=0" click.delegate="editrpt(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+
+                  </td>
+                  <td>${list.Description}</td>
+
+                  <td>${list.ProjectStatus}</td>
+                  <td>${list.doccount}</td>
+                  <td>${list.BCSNumber}</td>
+  <td>${list.ProjectStartDate | dateFormat:'MM/DD/YYYY'}</td>
+                  <td>
+                    <a show.bind="list.doccount!=0" click.delegate="$parent.editProjDocs(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+                  </td>
+
+                </tr>
+
+              </tbody>
+            </table>
+
+
+          </div>
+          <div class="modal-footer">
+
+            <!--<span class="col s12">
+                <table class="pinned">
+                <thead >
+                <tr>
+                    <th></th>
+                  <th>Floors</th>
+                  <th>Projects</th>
+                  <th>Description</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+               
+                  <th>Stage</th>
+                  <th># of Docs</th>
+                  <th>BCSNumber</th>
+                  <th>StartDate</th>
+                  <th>Documents</th>
+                
+                   
+              </thead>
+               </table>     
+              </span>-->
+            <span class="col s12">
+            <h4>
+              <!-- head.Address -->
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+
+
+            </span>
+
+          </div>
+        </div>
+        <!-- modal101 x -->
+        <div id="modal101x" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <div class="row">
+              <div class="col s3">
+                <span style='color:#c7c0c5 '> m101</span>
+
+              </div>
+
+              <div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " show.bind="showingStatus" style="width:165px" click.delegate="filterStatus( )">FilterStage </a>
+              </div>
+
+              <div class="col s4">
+
+                <a class="waves-effect waves-light btn btn-BB " style="width:205px" click.delegate="checkAllStages()">${statusText} </a>
+
+
+              </div>
+            </div>
+
+            <div show.bind="showingStatus" class="section--blue">
+              <form role="form">
+
+                <div class="row">
+                  <div class="col s2">
+                    Filter Stages:
+                  </div>
+                  <div class="col s10">
+                    <span repeat.for="dept of departments">
+                    <input type="checkbox" id="${dept.ProjectStatusId}" checked.bind="dept.tf" />
+                   
+                    <label for="${dept.ProjectStatusId}"> ${dept.ProjectStatus} &nbsp;&nbsp;&nbsp;&nbsp; </label>
+                    </label>
+                  </span>
+
+                  </div>
+                </div>
+
+
+              </form>
+            </div>
+
+
+            <table class="bordered hoverable table-responsive header grey lighten-1 tooltipped" data-position="bottom" data-delay="50"
+            data-tooltip='${headingModal}'>
+              <thead>
+                <tr>
+                  <th>Floors</th>
+                  <th>Projects</th>
+                  <th>Description</th>
+
+                  <th>Stage</th>
+                  <th># of Docs</th>
+                  <th>BCSNumber</th>
+                  <th>StartDate</th>
+                  <th>Documents</th>
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+                <tr repeat.for="list of lists | sort:'BCSNumber':'ascending' ">
+                  <td>${list.Floors}</td>
+                  <td>
+                    <a show.bind="list.jobnocount!=0" click.delegate="editrpt(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+
+                  </td>
+                  <td>${list.Description}</td>
+
+                  <td>${list.ProjectStatus}</td>
+                  <td>${list.doccount}</td>
+                  <td>${list.BCSNumber}</td>
+
+                  <!--<td>${list.ProjectStartDate | dateFormat:'MM/DD/YYYY'}</td>
+                  <td>
+                    <a show.bind="list.doccount!=0" click.delegate="$parent.editProjDocs(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+                  </td>-->
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <table style="margin-left:20px;width:95%" class="bordered hoverable table-responsive header grey lighten-1 tooltipped" data-position="bottom"
+            data-delay="50" data-tooltip='${headingModal}'>
+              <thead>
+                <tr>
+                  <th>Floors&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </th>
+
+                  <th>Description</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+
+                  <th>Stage&nbsp;&nbsp;</th>
+
+                  <th># of Docs</th>
+                  <th>BCSNumber</th>
+                  <th>StartDate</th>
+                  <th>Documents</th>
+                </tr>
+              </thead>
+            </table>
+            <span class="col s6">
+            <h4>
+              <!-- head.Address -->
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+            </span>
+          </div>
+        </div>
+        <!-- modal101 -->
+
+
+        <!-- modal3 -->
+        <div id="modal3" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <!--<div class="col s4">
+              <h4> Filings ${$parent.headingModal}</h4>
+            </div>-->
+            <div class="col s4">
+              <a class="waves-effect waves-light btn btn-BB " style="width:205px" click.delegate="checkArchive()">${statusTextArchive} </a>
+
+              <!--<label><input type="checkbox" checked.bind="true" />toggle status</label>-->
+            </div>
+
+            <table class="bordered hoverable table-responsive">
+              <thead>
+                <tr>
+                  <th>DOB#</th>
+                  <th>Doc</th>
+                  <th>WorkType</th>
+                  <th>Applicant</th>
+                  <th>Contractor</th>
+                  <th>Filed</br>Date</th>
+                  <th>Approved</br>Date</th>
+                  <th>Dis-</br>Approval</br>Date</th>
+                  <th>Permit</br>Date</th>
+                  <th>Div</br>SoDate</th>
+                  <th>Div</br>LocDate</th>
+                  <th>Status</th>
+                  <!-- <th>Comment</th> -->
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+
+                <!-- <tr repeat.for="filing of $parent.filings"> -->
+                <tr repeat.for="filing of filings">
+
+                  <td>
+                    <a class="btn btn-small btn-info waves-effect waves-lightd" target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?requestid=2&passjobnumber=${filing.JobNumber}">${filing.JobNumber}</a></td>
+                  </td>
+                  <td>${filing.DocNumber}</td>
+                  <td>${filing.WorkType}</td>
+                  <td>${filing.Applicant}</td>
+                  <td>${filing.Contractor}</td>
+                  <td>${filing.FiledDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.ApprovalDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.DisapprovalDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.PermitDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.DivSoDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.DivLocDate | dateFormat:'M/D/YYYY'}</td>
+                  <td>${filing.JobStatus}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <!--<span>modal3</span>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>-->
+            <span class="col s6">
+            <h4>
+           
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${headingModal} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+            </span>
+          </div>
+        </div>
+
+        <!--  disabled.bind="!canSave" -->
+        <!-- modal3 -->
+
+
+        <div id="modal3docs" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <!--<h4> Docs for BCSNumber: ${heading2}</h4>-->
+            <table class="bordered hoverable table-responsive">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>FileName</th>
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+                <tr repeat.for="doc of docs">
+                  <td>${doc.Description}</td>
+                  <td><a href="http://act.brookbridgeinc.com/Clients/ClientProjectDocuments/Upload/${doc.ProjectDocId}">${doc.OldFileName}</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <!--<span>modal3docs</span>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>-->
+            <span class="col s6">
+            <h4>
+           
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address/Bcs#:</span> ${heading2} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+            </span>
+
+          </div>
+        </div>
+        <!-- modal3docs end -->
+
+        <div id="modal102" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4>modal102 Property ${headingModal}</h4>
+
+
+
+
+            <table class="bordered hoverable table-responsive">
+              <thead>
+                <tr>
+                  <th>ECBNumber</th>
+                  <th>Respondent</th>
+                  <th>ViolationStatus</th>
+                  <th>ECBHearingStatus</th>
+                  <th>ViolDate</th>
+                  <th>Status</th>
+                  <th>ViolationType</th>
+
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+                <!-- <tr repeat.for="list of $parent.lists | sort:column.value:'ascending' | filter:statusfilter.value "> -->
+                <tr repeat.for="list of lists">
+                  <!-- this is wrong -->
+                  <a class="btn btn-small btn-info waves-effect waves-lightd" target='_blank' href='http://a810-bisweb.nyc.gov/bisweb/ActionViolationDisplayServlet?requestid=1&allbin=${list.Bin}&allinquirytype=BXS3OCV4&allisn=0001899851'>${list.ECBNumber}</a></td>
+                  </td>
+                  <td>${list.Respondent}</td>
+
+                  <td>${list.ViolationStatus}</td>
+                  <td>${list.ECBHearingStatus}</td>
+                  <th>${list.ViolDate | dateFormat:'M/D/YYYY'}</th>
+
+                  <td>${list.Status}</td>
+                  <td>${list.ViolationType}</td>
+
+                  <td>
+                    <a show.bind="list.Documents!=0" click.delegate="$parent.$parent.edit(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> edit</i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            ${parent.lists}
+            <a show.bind="list.Documents!=0" click.delegate="$parent.saveCsv($parent.lists)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> import_export</i></a>
+
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+          </div>
+        </div>
+        <!-- end modal1 102-->
+
+        <div id="modal103" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <!--<h4>modal103 Property ${$parent.headingModal}</h4>-->
+            <div class="col s3">
+
+              <span style='color:#c7c0c5 '> m103</span>
+
+            </div>
+            <table class="bordered hoverable table-responsive">
+              <thead>
+                <tr>
+                  <th>ViolationNumber</th>
+                  <!-- <th>DOBNumber</th>
+                  <th>DeviceNumber</th> -->
+                  <th>Status</th>
+                  <th>ViolationType</th>
+                  <th>FileDate</th>
+                  <th>IssueDate</th>
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+
+                <!--| sort:'IssueDate':'ascending'-->
+
+                <tr repeat.for="list of listsV ">
+
+                  <!-- http://a810-bisweb.nyc.gov/bisweb/ActionViolationDisplayServlet?requestid=1&allbin=${list.Bin}&allinquirytype=BXS3OCV4&allisn=0001899851 -->
+                  <!-- http://a810-bisweb.nyc.gov/bisweb/ActionViolationDisplayServlet?requestid=1&allbin=1022709&allinquirytype=BXS3OCV4&allisn=0001899851 -->
+                  <!-- <a class="btn btn-small btn-info waves-effect waves-lightd" target='_blank' href="http://a810-bisweb.nyc.gov/bisweb/JobsQueryByNumberServlet?requestid=2&passjobnumber=${filing.JobNumber}&passdocnumber=${filing.DocNumber}">${filing.JobNumber}</a></td> -->
+                  <td>
+                    <a class="btn btn-small btn-info waves-effect waves-lightd" target='_blank' href='http://a810-bisweb.nyc.gov/bisweb/ActionViolationDisplayServlet?requestid=1&allbin=${list.Bin}&allinquirytype=BXS3OCV4&allisn=0001899851'>${list.ViolationNumber}</a></td>
+                  </td>
+                  <td>${list.Status}</td>
+                  <td>${list.ViolationType}</td>
+                  <th>${list.FileDate | dateFormat:'M/D/YYYY'}</th>
+                  <th>${list.IssueDate | dateFormat:'M/D/YYYY'}</th>
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            ${parent.lists}
+            <span class="col s6">
+            <h4>
+              <!-- head.Address -->
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${headingModal} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+            </span>
+            <!--<a show.bind="list.Documents!=0" click.delegate="$parent.saveCsv($parent.lists)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> import_export</i></a>
+
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>-->
+          </div>
+        </div>
+        <!-- modal1103 -->
+
+
+
+        <!-- modal105 -->
+        <div id="modal105" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <!-- <h4>modal105 ${$parent.heading2}</h4> -->
+            <h4>modal105 ${heading2}</h4>
+
+            <table class="bordered hoverable table-responsive">
+              <thead>
+                <tr>
+                  <!-- <th>DrawingDocId</th> -->
+                  <th>Document Title</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody class="cursor-pointer">
+
+                <!-- <tr repeat.for="list of $parent.lists | sort:column.value:'ascending' | filter:statusfilter.value "> -->
+                <tr repeat.for="doc of docs">
+                  <!-- <td>${doc.DrawingId}</td> -->
+
+                  <!-- <td>${doc.DrawingDocId}</td> -->
+                  <td><a href="http://act.brookbridgeinc.com/Clients/ClientDrawing/Upload/${doc.DrawingDocId}">${doc.OldFileName}</a></td>
+
+                  <!-- <td>${doc.OldFileName}</td> -->
+
+                  <td>${doc.Description}</td>
+                  <!-- <td>
+                    <a show.bind="list.Documents!=0" click.delegate="$parent.$parent.editdrawing(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> edit</i></a>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <!-- ${parent.lists} -->
+            <a show.bind="list.Documents!=0" click.delegate="$parent.saveCsv($parent.lists)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> import_export</i></a>
+
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+          </div>
+        </div>
+        <!-- modal1105 -->
+
+        <div id="modal104" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <div class="row">
+              <!--<div class="col s3">
+              
+              </div>
+              <div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " style="width:165px" click.delegate="showFilterPanel( )"> ${showingFilter}</a>
+              </div>
+              
+              
+              
+              <div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " show.bind="showing" style="width:165px" click.delegate="filterDrawings( )">Filter </a>
+              </div>-->
+              <!--<div class="col s3">
+                <a class="waves-effect waves-light btn btn-BB " show.bind="showing" style="width:165px" click.delegate="filterFloors( )">Filterfls </a>
+              </div>-->
+
+              <div class="col s6">
+                <br/>
+                <a class="waves-effect waves-light btn btn-BB " style="width:165px" click.delegate="filterClear(1)">Clear Flter </a>
+              </div>
+              <div class="col s6">
+                <label style='bold'>Sort By</label>
+                <select class="browser-default tooltipped" data-position="bottom" data-delay="50" data-tooltip="Click to change sort" name="column"
+                id="column" ref="column">
+                  <option value="TenantName">TenantName</option>
+                  <option value="Documents">Docs</option>
+                  <option value="Floor">Floor</option>
+                  <option value="WorkTypeId">Type</option>
+
+                </select>
+              </div>
+
+            </div>
+
+            <!-- <section> -->
+            <!--<div show.bind="showing" class="section-blue">-->
+            <form role="form">
+              <div class="row">
+                <div class="col s2">
+                  <p>Tenants</p>
+                  <div repeat.for="tenant of tenants">
+                    <!--<input type="radio" name="group1" id="${tenant.TenantId}" change.trigger="selecttheTenant(tenant)" />-->
+                    <input type="radio" name="group1" id="${tenant.TenantId}" change.trigger="filterDrawingsOrig2(1,tenant)" />
+                    <!--<input type="checkbox" id="T${type.DrawingId}" checked!="checked" change.delegate="filterDrawingsOrig2(1,tenant)" />-->
+                    <label for="${tenant.TenantId}"> ${tenant.TenantName}</label>
+                    </br>
+                  </div>
+                </div>
+                <div class="col s2">
+                  <p>Types</p>
+                  <span repeat.for="type of types">
+                                <!--<input type="checkbox" id="T${type.DrawingId}" checked!="checked" change.trigger="selecttheTyp(type)" />-->
+                                <input type="checkbox" id="T${type.DrawingId}" checked!="checked" change.trigger="filterDrawingsOrig2(2,type)" />
+                                <label for="T${type.DrawingId}">${type.DrawingType}</label>
+                                </br>
+                                
+                            </span>
+
+                </div>
+                <!--<div class="col s6">-->
+                <div class="col s3">
+                  <p>Floors</p>
+                  <span repeat.for="floor of floors">
+                        <!--<input type="checkbox" id="F${floor.DrawingId}" checked!="checked"  change.trigger="selecttheFloor(floor)" />-->
+                              <input type="checkbox" id="F${floor.DrawingId}" checked!="checked" change.trigger="filterDrawingsOrig2(3,floor)" />
+                         
+                        <label for="F${floor.DrawingId}"> =${floor.Floor}&nbsp;&nbsp;</label>
+                       </span>
+                </div>
+
+                <!--            
+              </form>
+            </div>-->
+
+                <div class="col s5">
+                  <table class="bordered hoverable table-responsive ">
+
+                    <thead>
+                      <!--<col width="250px">
+                      <col width="10%">
+                      <col width="20%">
+                      <col width="10%">-->
+                      <tr>
+                        <th>Tenant</th>
+                        <th>Floor</th>
+                        <th>Type</th>
+                        <th>Docs</th>
+
+                      </tr>
+                    </thead>
+                    <tbody class="cursor-pointer">
+                      <tr repeat.for="list of lists | sortname:column.value:'ascending' ">
+                        <td>${list.TenantName}</td>
+                        <td>${list.Floor}</td>
+                        <td>${list.DrawingType}</td>
+                        <td>${list.Documents}</td>
+                        <td>
+                          <a show.bind="list.Documents!=0" click.delegate="$parent.editdrawing(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> edit</i></a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+              </div>
+            </form>
+            <!--</div>-->
+
+
+            <!-- </section> -->
+
+
+          </div>
+          <div class="modal-footer">
+            <span class="col s12">
+            <h4>
+              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${headingModal} <a click.delegate="filterClear(2)"
+            class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
+            </h4>
+            </span>
+          </div>
+        </div>
+        <!-- modal104 -->
+
+
+        <!-- modal106 -->
+        <div id="modal106" class="modal modal-fixed-footer">
+          <div class="modal-content">
+            <h4>${headingModal} - Brookbridge Chart</h4>
+            <hr/>
+            <div class="well">
+              <require from="../resources/chart"></require>
+              <chart chart-options.bind="chartOptions">
+              </chart>
+            </div>
+
+            <div class="well" if.bind="isDisplayed">
+              <require from="../resources/chart"></require>
+              <chart chart-options.bind="hiddenChartOptions"></chart>
+              <div chartDefaults></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col s2"> <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a></div>
+          </div>
+        </div>
+        <!-- modal1106 -->
+
+
+
+
+
+
+
+        <!--last 2 divs-->
+      </div>
+    </div>
+    <!--<div mark-->
+
+  </section>
+</template>

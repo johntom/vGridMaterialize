@@ -1,0 +1,120 @@
+<template>
+  <div id="modal101" class="modal modal-fixed-footer">
+  <!-- <div class="modal-header">
+if I use header then report goes past footer
+            <h4>    <span style='color:#c7c0c5 '> Address:</span> ${head.Address}</h4>
+  </div> -->
+
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s3">
+
+          <!-- <span style='color:#c7c0c5 '> Address:</span> ${head.Address} -->
+          <span style='color:#c7c0c5 '> Address:</span> ${head}
+
+        <!--           <h4>    <span style='color:#c7c0c5 '> Address:</span> ${head.Address}</h4> -->
+      </div>
+      <div class="col s3">
+        <a class="waves-effect waves-light btn btn-BB " style="width:165px" click.delegate="showFilterStatusPanel( )"> ${showingStatusFilter}</a>
+      </div>
+      <div class="col s3">
+        <a class="waves-effect waves-light btn btn-BB " show.bind="showingStatus" style="width:165px" click.delegate="filterStatus( )">Filter </a>
+      </div>
+      <div class="col s3">
+        <a class="waves-effect waves-light btn btn-BB " show.bind="showingStatus" style="width:165px" click.delegate="filterStatusClear( )">Clear/Close </a>
+      </div>
+    </div>
+
+    <!-- <section> -->
+
+    <div show.bind="showingStatus" class="section--blue">
+      <form role="form">
+        <div class="row">
+          <!-- <div class="col s12"> -->
+            <p>Status Types</p>
+            <!-- <span repeat.for="dept of depts">
+    <input type="checkbox" id="${dept.ProjectStatusId}" checked!="checked" />
+    <label for="${dept.ProjectStatusId}">${dept.ProjectStatus}</label>
+    </br>
+    </label>
+  </span>.two-way click.delegate="$parent.check( dept.ProjectStatusId )"-->
+        <div class="col s12">
+              <span class="col s13" repeat.for="dept of depts">
+              <input type="checkbox" id="${dept.ProjectStatusId}" checked.bind="dept.tf"  />
+              <!-- <input type="checkbox" id="${tenant.TenantId}"  checked.two-way="tenant.tf"  click.delegate="$parent.check( tenant )"  /> -->
+              <!-- <label for="${dept.ProjectStatusId}"> ${dept.ProjectStatus} / ${dept.tf}</label> -->
+              <!-- </br> -->
+                  <label for="${dept.ProjectStatusId}"> ${dept.ProjectStatus} </label>
+              </label>
+            </span>
+
+          </div>
+        </div>
+      </form>
+    </div>
+    m101
+    <table class="bordered hoverable table-responsive header grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip='${$parent.headingModal}'>
+      <thead>
+        <tr>
+          <th>Floors</th>
+          <th>Filings</th>
+          <th>Description</th>
+          <th>Documents</th>
+          <th>Department</th>
+          <th>BCSNumber#</th>
+            <th>StartDate</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody class="cursor-pointer">
+        <tr repeat.for="list of lists">
+          <td>${list.Floors}</td>
+          <td>
+            <a show.bind="list.Documents!=0" click.delegate="$parent.editrpt(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+          </td>
+          <td>${list.Description}</td>
+          <td>${list.Documents}</td>
+          <th>${list.ProjectStatus}</th>
+          <td>${list.BCSNumber}</td>
+          <td>${list.ProjectStartDate | dateFormat:'MM/DD/YYYY'}</td>
+
+          <td>
+            <a show.bind="list.Documents!=0" click.delegate="$parent.editProjDocs(list)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> assignment</i></a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <!-- ${parent.lists} -->
+    <!-- <a show.bind="list.Documents!=0" click.delegate="$parent.saveCsv($parent.lists)" class="btn-floating btn-small waves-effect waves-light red"><i class="material-icons"> import_export</i></a> -->
+
+    <!-- <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Close</a> -->
+
+    <table style="margin-left:20px;width:95%" class="bordered hoverable table-responsive header grey lighten-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip='${$parent.headingModal}'>
+      <thead>
+        <tr>
+          <th>Floors&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+          <th>Filings</th>
+          <th>Description</th>
+          <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+          <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+          <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+
+          <th>Documents</th>
+          <th>Department</th>
+          <th>BCSNumber#</th>
+              <th>StartDate</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+    </table>
+    <span class="col s6">
+      <h4>
+        <!-- head.Address -->
+        <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a></h4>
+    </span>
+  </div>
+</div>
+</template>
