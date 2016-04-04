@@ -2,7 +2,7 @@
     <require from="../vGrid/v-grid.css"></require>
     <require from="../vGrid/v-grid.js"></require>
     <!--<section class="au-animate section no-pad-bot">-->
-    <h2>  vGrid materialzie modal within modal version:1.0.2</h2>
+    <h2>  vGrid materialzie modal within modal version:1.0.3</h2>
     <div class="row">
         <div class="col s2">
             <button type="submit" click.delegate="popup()" class="btn btn-lg  btn-block btn-success"> popup</button>
@@ -12,7 +12,7 @@
         </div>
     </div>
     <v-grid id='grid1' ref='grid1' style="position:relative;margin-left:25px;width:%; height:250px" 
-    row-height="25" header-height="50" resizable-headers="true"
+    row-height="45" header-height="50" resizable-headers="true"
     sortable-headers="true" sort-on-header-click="true" header-filter="true" 
     header-filter-onkeydown="true" header-filter-not-to="phone"
     header-filter-top="true" multi-select="true"
@@ -23,11 +23,9 @@
             <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
             <v-grid-col col-width="160" attribute="country" header="Country" default-filter="*="></v-grid-col>
             <v-grid-col col-width="150" attribute="email" header="Email" default-filter="*"></v-grid-col>
-            <v-grid-col col-width="160" col-css="color: rgb(238,146,1419)" attribute="color" header="Color" default-filter="=*"></v-grid-col>
-            <v-grid-col col-width="160" col-css='color: color' header="Color" attribute="color" default-filter="=*"></v-grid-col>
-
+            <v-grid-col col-width="150" attribute="color" header="Color" default-filter="=" col-css="background-color: {{color}}"></v-grid-col>
             <v-grid-col col-width="160" attribute="link" header="link" default-filter="=*"></v-grid-col>
-
+          
         </v-grid-row>
     </v-grid>
     <!--<form class="form-horizontal">-->
