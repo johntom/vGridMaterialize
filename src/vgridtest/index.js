@@ -1,4 +1,26 @@
+/* 
+notes
+config="current-entity.bind:myCurrentEntity; collection.bind:myCollection;grid-context.bind:grid1">
+config="current-entity.bind:myCurrentEntity2; collection.bind:myCollection2;grid-context.bind:grid2">
 
+index.js under conllection add the grid1 & 2
+
+myCollection = [];
+ myCurrentEntity = {};
+ myCollection2 = [];
+ myCurrentEntity2 = {};
+ gridData=[];
+ grid1 = {};
+ grid2 ={};
+
+
+in the call to pupup force the grid to redraw by calling the redraw function
+popup () {
+         $('#modal1').openModal();
+         this.grid1.ctx.redrawGrid();
+   }
+
+*/
 import {   inject, singleton } from 'aurelia-dependency-injection';
 import {dummyDataGenerator} from './data/dummyDataGenerator';
 //import {   TestData } from "./data/testData";
@@ -21,6 +43,12 @@ export class Vgridtest {
     myCollection2 = [];
     myCurrentEntity2 = {};
     gridData = [];
+    grid1 = {};
+    grid2 ={};
+    grid3 = {};
+ 
+    
+    
     /********************************************************************
      * Constructor
      *****************router*****element**********************************************/
@@ -42,10 +70,9 @@ export class Vgridtest {
                     //    return new Person(key);
                     let p = new Person(key);
                     this.newdata.push(p);
-                    if (ct===0)   this.myCurrentEntity = p;// newdata[0];
+                    if (ct===0)   this.myCurrentEntity = p;
                      ct ++;
                     return p
-                  
                     //lodash.assignIn({ 'link': 'www.gtz' }, key);  
                 }
                 //return new Person(key);
@@ -63,6 +90,7 @@ export class Vgridtest {
 
     popup() {
         $('#modal1').openModal();
+         this.grid1.ctx.redrawGrid();
     }
 
 
@@ -78,6 +106,7 @@ export class Vgridtest {
 
         this.myCurrentEntity2 = {};
         $('#modal2').openModal();
+        this.grid2.ctx.redrawGrid();
     }
   
     //http://tutaurelia.net/2016/01/10/export-data-to-excel-from-an-aurelia-web-application/
