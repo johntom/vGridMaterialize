@@ -34,7 +34,7 @@ System.config({
     "fetch": "github:github/fetch@0.10.1",
     "font-awesome": "npm:font-awesome@4.5.0",
     "highcharts": "npm:highcharts-release@4.2.1",
-      "jquery": "github:components/jquery@2.2.0",
+    "jquery": "github:components/jquery@2.2.0",
     "lodash": "npm:lodash@3.10.1",
     "select2": "github:select2/select2@4.0.1",
     "text": "github:systemjs/plugin-text@0.0.4",
@@ -85,6 +85,9 @@ System.config({
       "aurelia-framework": "npm:aurelia-framework@1.0.0-beta.1.0.7",
       "aurelia-http-client": "npm:aurelia-http-client@1.0.0-beta.1",
       "aurelia-router": "npm:aurelia-router@1.0.0-beta.1"
+    },
+    "github:select2/select2@4.0.1": {
+      "jquery": "npm:jquery@2.2.2"
     },
     "npm:amdefine@1.0.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

@@ -7,14 +7,20 @@
 export class VGridSelection {
 
 
-  selectedRows = [];
+
   selectionMode = "none";
-  lastRowSelected = 0;
-  lastKeyKodeUsed = "none";
-  onClicked = false;       
+  lastRowSelected = -1; //this ned to be reset when filtering
+  lastKeyKodeUsed = "none"; //this ned to be reset when filtering
+  selectedRows = 0;
 
 
-  constructor(mode) {
+
+
+
+  constructor(mode, that) {
+
+    this.that = that;
+    this.sgSel = "__vGridSel" + Math.floor((Math.random() * 1000) + 1);
 
     if (mode === false) {
       this.selectionMode = "single"
@@ -25,6 +31,9 @@ export class VGridSelection {
 
 
   }
+
+
+
 
   setMode(mode){
     this.selectionMode = "none";
@@ -37,13 +46,32 @@ export class VGridSelection {
 
   }
 
+
   isSelected(row) {
     var result = false;
-    if (this.selectedRows.indexOf(row) !== -1) {
-      result = true;
+    if(this.selectedRows > 0){
+      if(this.that.collectionFiltered[row]){
+        if (this.that.collectionFiltered[row][this.sgSel] === true) {
+          result = true;
+        }
+      }
     }
     return result;
   };
+
+
+  isSelectedMainCollection(row) {
+    var result = false;
+    if(this.selectedRows > 0){
+      if(this.that.collection[row]){
+        if (this.that.collection[row][this.sgSel] === true) {
+          result = true;
+        }
+      }
+    }
+    return result;
+  };
+
 
   select(rowSelect, addToSelection) {
     switch (this.selectionMode) {
@@ -52,21 +80,70 @@ export class VGridSelection {
       case undefined:
         break;
       case "single":
-        if (this.selectedRows !== undefined) {
-          if (this.selectedRows.length > 1) {
-            this.selectedRows = [];
+        if (this.that.collection !== undefined) {
+          if (this.that.collection.length > 1) {
+            this.that.collection.forEach((x) => {
+              if(x[this.sgSel] === true){
+                x[this.sgSel] = false;
+              }
+            });
+
           }
         }
-        this.selectedRows[0] = rowSelect;
+        this.that.collectionFiltered[rowSelect][this.sgSel] = true;
+        this.selectedRows = 1;
         break;
       case "multible":
         if (!addToSelection) {
-          this.selectedRows = [];
-          this.selectedRows[0] = rowSelect
+          this.selectedRows = 0;
+          this.that.collection.forEach((x) => {
+            if(x[this.sgSel] === true){
+              x[this.sgSel] = false;
+            }
+          });
+          this.that.collectionFiltered[rowSelect][this.sgSel] = true;
+          this.selectedRows++;
         } else {
-          if (!this.isSelected(rowSelect)) {
-            this.selectedRows.push(rowSelect)
+          this.that.collectionFiltered[rowSelect][this.sgSel] = true;
+          this.selectedRows++;
+        }
+    }
+  };
+
+
+  selectMainCollection(rowSelect, addToSelection) {
+    switch (this.selectionMode) {
+      case "none":
+      case null:
+      case undefined:
+        break;
+      case "single":
+        if (this.that.collection !== undefined) {
+          if (this.that.collection.length > 1) {
+            this.that.collection.forEach((x) => {
+              if(x[this.sgSel] === true){
+                x[this.sgSel] = false;
+              }
+            });
+
           }
+        }
+        this.that.collection[rowSelect][this.sgSel] = true;
+        this.selectedRows = 1;
+        break;
+      case "multible":
+        if (!addToSelection) {
+          this.selectedRows = 0;
+          this.that.collection.forEach((x) => {
+            if(x[this.sgSel] === true){
+              x[this.sgSel] = false;
+            }
+          });
+          this.that.collection[rowSelect][this.sgSel] = true;
+          this.selectedRows++;
+        } else {
+          this.that.collection[rowSelect][this.sgSel] = true;
+          this.selectedRows++;
         }
     }
   };
@@ -74,30 +151,123 @@ export class VGridSelection {
 
   selectRange(start, end) {
     if (this.selectionMode === "multible") {
-      this.selectedRows = [];
+      this.that.collection.forEach((x) => {
+        if(x[this.sgSel] === true){
+          x[this.sgSel] = false;
+        }
+      });
+      this.selectedRows = 0;
       for (var i = start; i < end + 1; i++) {
-        this.selectedRows.push(i)
+        this.that.collectionFiltered[i][this.sgSel] = true;
+        this.selectedRows++;
       }
     }
   };
 
 
-  reset() {
-    this.selectedRows = [];
+  selectRangeMainCollection(start, end) {
+    if (this.selectionMode === "multible") {
+      this.that.collection.forEach((x) => {
+        if(x[this.sgSel] === true){
+          x[this.sgSel] = false;
+        }
+      });
+      this.selectedRows = 0;
+      for (var i = start; i < end + 1; i++) {
+        this.that.collection[i][this.sgSel] = true;
+        this.selectedRows++;
+      }
+    }
   };
+
+
+
+  reset() {
+    if(this.selectedRows > 0){
+      this.that.collection.forEach((x) => {
+        if(x[this.sgSel] === true){
+          x[this.sgSel] = false;
+        }
+      });
+    }
+    this.selectionMode = "none";
+    this.lastRowSelected = -1;
+    this.lastKeyKodeUsed = "none";
+    this.selectedRows = 0;
+  };
+
+  resetFilteredOnly() {
+    if(this.selectedRows > 0){
+      this.that.collectionFiltered.forEach((x) => {
+        if(x[this.sgSel] === true){
+          x[this.sgSel] = false;
+        }
+      });
+    }
+    this.selectedRows = this.getSelectedRowsMainCollection().length;
+  };
+
 
   getSelectedRows() {
-    return this.selectedRows;
+    var array = [];
+    if(this.selectedRows > 0){
+      this.that.collectionFiltered.forEach((x, index) => {
+        if(x[this.sgSel] === true){
+          array.push(index)
+        }
+      });
+    }
+    return array
   };
 
+  getSelectedRowsMainCollection() {
+    var array = [];
+    if(this.selectedRows > 0){
+      this.that.collection.forEach((x, index) => {
+        if(x[this.sgSel] === true){
+          array.push(index)
+        }
+      });
+    }
+    return array
+  };
+
+
   setSelectedRows(newRows) {
-    this.selectedRows = newRows;
+    if(this.selectedRows > 0) {
+      this.that.collection.forEach((x) => {
+        if (x[this.sgSel] === true) {
+          x[this.sgSel] = false;
+        }
+      });
+    }
+    this.selectedRows = 0;
+    for(var i = 0; i < newRows.length; i++){
+      this.that.collectionFiltered[newRows[i]][this.sgSel] = true;
+      this.selectedRows++;
+    }
+  };
+
+
+  setSelectedRowsMainCollection(newRows) {
+    if(this.selectedRows > 0) {
+      this.that.collection.forEach((x) => {
+        if (x[this.sgSel] === true) {
+          x[this.sgSel] = false;
+        }
+      });
+    }
+    this.selectedRows = 0;
+    for(var i = 0; i < newRows.length; i++){
+      this.that.collection[newRows[i]][this.sgSel] = true;
+      this.selectedRows++;
+    }
   };
 
   /****************************************************************************************************************************
    * fixes highlight and select...
    ****************************************************************************************************************************/
-  setHightlight(e, that) {
+  setHightlight(e, currentRow, that) {
     //_private.selectionVars.
     var isSel;
 
@@ -118,13 +288,10 @@ export class VGridSelection {
       this.setSelectedRows(selectedRows);
     };
 
-    var currentRow = that.getRowNumberFromClickedOn(e);
     var currentselectedRows = this.getSelectedRows();
 
     if (currentRow !== this.lastRowSelected || currentselectedRows[0] !== currentRow) {
 
-      //if not same row clicked again..
-      this.onClicked = true;
 
       if (currentRow <= (that._private.configFunctions.getCollectionLength() - 1)) { //do I need to check this?
 
@@ -161,11 +328,15 @@ export class VGridSelection {
               } else {
                 this.select(currentRow, true);
               }
+              this.lastRowSelected = currentRow;
               break;
 
             case this.lastKeyKodeUsed === "ctrl" && currentKeyKode === "shift":
-
+              var oldSel = this.getSelectedRows();
               this.selectRange(this.lastRowSelected, currentRow);
+              var newSel = this.getSelectedRows();
+              this.setSelectedRows(oldSel.concat(newSel));
+
               break;
 
             case this.lastKeyKodeUsed === "ctrl" && currentKeyKode === "ctrl":
@@ -176,6 +347,7 @@ export class VGridSelection {
               } else {
                 this.select(currentRow, true);
               }
+              this.lastRowSelected = currentRow;
               break;
 
             case this.lastKeyKodeUsed === "none" && currentKeyKode === "ctrl":
@@ -186,6 +358,7 @@ export class VGridSelection {
               } else {
                 this.select(currentRow, true);
               }
+              this.lastRowSelected = currentRow;
               break;
 
             case this.lastKeyKodeUsed === "shift" && currentKeyKode === "shift":
@@ -195,17 +368,19 @@ export class VGridSelection {
               } else {
                 this.selectRange(this.lastRowSelected, currentRow);
               }
+
               break;
 
             case this.lastKeyKodeUsed === "none" && currentKeyKode === "shift":
 
-              if (this.lastRowSelected !== null) {
+              if (this.lastRowSelected !== -1) {
                 if (this.lastRowSelected > currentRow) {
                   this.selectRange(currentRow, this.lastRowSelected);
                 } else {
                   this.selectRange(this.lastRowSelected, currentRow);
                 }
               } else {
+                this.lastRowSelected = currentRow;
                 this.select(currentRow);
               }
               break;
@@ -233,7 +408,7 @@ export class VGridSelection {
         if (isSel === true) {
           removeRowHighligt(currentRow);
         }
-        this.lastRowSelected = -1
+        this.lastRowSelected = currentRow
       } else {
         //else we just wanto make it current..
         isSel = this.isSelected(currentRow);

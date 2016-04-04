@@ -13,13 +13,7 @@ export class App {
         },
      
         
-     {
-          route: [ 'properties'],
-          moduleId: 'properties/properties-section',
-          nav: true,
-          title: 'Properties',
-          auth: true 
-        },
+    
     ]);
 
     this.router = router;

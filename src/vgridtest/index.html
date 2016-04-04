@@ -1,95 +1,141 @@
 <template>
- <require from="../vGrid/v-grid.css"></require>
-<require from="../vGrid/v-grid.js"></require>
-  <!--<section class="au-animate section no-pad-bot">-->
-    <h1>  vGrid materialzie modal within modal</h1>
-   <div class="row">
-  
-    <div class="col s2">
-                  <button type="submit" click.delegate="popup()" class="btn btn-lg  btn-block btn-success"> popup</button>
-       </div>
-   
-     <div class="col s2">
-                  <button type="submit" click.delegate="popup2()" class="btn btn-lg  btn-block btn-success"> popup2</button>
-       </div>
-  </div>
-     <!--<a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>-->
-
-  <!-- Modal Structure -->
-  <div id="modal1" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>Modal Header</h4>
-           <v-grid ref='v1'
-        style="position:relative;margin-left:25px;width:%; height:500px"
-        row-height="25"
-        header-height="50"
-        resizable-headers="true"
-        sortable-headers="true"
-        sort-on-header-click="true"
-        header-filter="true"
-        header-filter-onkeydown="true"
-        header-filter-not-to="phone"
-        header-filter-top="true"
-        multi-select="true"
-        config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
-    <v-grid-row>
-        <v-grid-col col-width="150" attribute="index"   header="Index"    default-filter=">=" read-only="true"></v-grid-col>
-        <v-grid-col col-width="150" attribute="name"    header="Name"     default-filter="*="                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="country" header="Country"  default-filter="="                  ></v-grid-col>
-        <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
-        <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
-    </v-grid-row> 
-    </div>
-    <div class="modal-footer">
-          <div class="col s2">
-                  <button type="submit" click.delegate="exportContacts()" class="btn btn-lg  btn-block btn-success"> Export to Excel</button>
-       </div>
+    <require from="../vGrid/v-grid.css"></require>
+    <require from="../vGrid/v-grid.js"></require>
+    <!--<section class="au-animate section no-pad-bot">-->
+    <h2>  vGrid materialzie modal within modal version:1.0.1</h2>
+    <div class="row">
         <div class="col s2">
-                  <button type="submit" click.delegate="popup2()" class="btn btn-lg  btn-block btn-success"> popup2</button>
-       </div>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+            <button type="submit" click.delegate="popup()" class="btn btn-lg  btn-block btn-success"> popup</button>
+        </div>
+        <div class="col s2">
+            <button type="submit" click.delegate="popup2()" class="btn btn-lg  btn-block btn-success"> popup2</button>
+        </div>
     </div>
-  </div>
-  
-  
-   <div id="modal2" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <h4>Modal Header2</h4>
-         ${myCollection2}    
-    
-           <v-grid ref='v2' id="v2"
-        style="position:relative;margin-left:25px;width:%; height:500px"
-        row-height="25"
-        header-height="50"
-        resizable-headers="true"
-        sortable-headers="true"
-        sort-on-header-click="true"
-        header-filter="true"
-        header-filter-onkeydown="true"
-        header-filter-not-to="phone"
-        header-filter-top="true"
-        multi-select="true"
-        config="current-entity.bind:myCurrentEntity2; collection.bind:myCollection2 ">
-    <v-grid-row>
-        <v-grid-col col-width="150" attribute="index"   header="Index"    default-filter=">=" read-only="true"></v-grid-col>
-        <v-grid-col col-width="150" attribute="name"    header="Name"     default-filter="*="                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="country" header="Country"  default-filter="="                  ></v-grid-col>
-        <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
-        <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
-    </v-grid-row> 
+    <v-grid id='vg1' ref='vg1' style="position:relative;margin-left:25px;width:%; height:250px" 
+    row-height="25" header-height="50" resizable-headers="true"
+    sortable-headers="true" sort-on-header-click="true" header-filter="true" 
+    header-filter-onkeydown="true" header-filter-not-to="phone"
+    header-filter-top="true" multi-select="true"
+    config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
+
+        <v-grid-row>
+            <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
+            <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
+            <v-grid-col col-width="160" attribute="country" header="Country" default-filter="*="></v-grid-col>
+            <v-grid-col col-width="150" attribute="email" header="Email" default-filter="*"></v-grid-col>
+            <v-grid-col col-width="160" col-css="color: rgb(238,146,1419)" attribute="color" header="Color" default-filter="=*"></v-grid-col>
+            <v-grid-col col-width="160" col-css='color: color' header="Color" attribute="color" default-filter="=*"></v-grid-col>
+
+            <v-grid-col col-width="160" attribute="link" header="link" default-filter="=*"></v-grid-col>
+
+        </v-grid-row>
+    </v-grid>
+    <!--<form class="form-horizontal">-->
+    <div class="row">
+        <form class="col s8">
+            <div class="row">
+                <div class="input-field"></div>
+                <label class="col s2 control-label">Name</label>
+                <div class="col s6">
+                    <input class="form-control input-sm au-target" disabled.bind="!myCurrentEntity.index" value.bind="myCurrentEntity.name" au-target-id="32">
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="input-field"></div>
+                <label class="col s2 control-label">country</label>
+                <div class="col s6">
+                    <input class="form-control input-sm au-target" disabled.bind="!myCurrentEntity.index" value.bind="myCurrentEntity.country"
+                    au-target-id="33">
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="input-field"></div>
+                <label class="col s2 control-label">phone</label>
+
+                <div class="col s6">
+                    <input class="form-control input-sm au-target" disabled.bind="!myCurrentEntity.index" value.bind="myCurrentEntity.date" au-target-id="34">
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="input-field"></div>
+                <label class="col s2 control-label">color</label>
+
+                <div class="col s6">
+                    <input class="form-control input-sm au-target" disabled.bind="!myCurrentEntity.index" value.bind="myCurrentEntity.color"
+                    au-target-id="34">
+                </div>
+
+            </div>
+
+
+        </form>
     </div>
-    <div class="modal-footer">
-              <div class="col s2">
-                  <button type="submit" click.delegate="exportContacts2()" class="btn btn-lg  btn-block btn-success"> Export to Excel</button>
-       </div>
-         
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+
+
+
+
+    <!--col-css="color"  <a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>-->
+    <!--<input class="vGrid-content" style="color: rgb(238,146,141)" v-grid-data-attribute="color" value="rgb(238,146,141)" readonly="false">-->
+    <!-- Modal Structure -->
+    <div id="modal1" style="height:500px" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <v-grid id='vg2' ref='vg2'  style="position:relative;margin-left:25px;width:%; height:500px" row-height="25" header-height="50" resizable-headers="true"
+            sortable-headers="true" sort-on-header-click="true" header-filter="true" header-filter-onkeydown="true" header-filter-not-to="phone"
+            header-filter-top="true" multi-select="true" row-on-draw="onRowDraw" 
+            config="current-entity.bind:myCurrentEntity1; collection.bind:myCollection1;  grid-context.bind:myCollection1 ">
+              <v-grid-row>
+                    <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
+                    <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
+                    <v-grid-col col-width="160" attribute="country" header="Country" default-filter="*="></v-grid-col>
+                    <v-grid-col col-width="150" attribute="email" header="Email" default-filter="*"></v-grid-col>
+                    <v-grid-col col-width="160" attribute="color" header="Color" default-filter="=*"></v-grid-col>
+                </v-grid-row>
+            </v-grid>
+        </div>
+        <div class="modal-footer">
+            <div class="col s2">
+                <button type="submit" click.delegate="exportContacts()" class="btn btn-lg  btn-block btn-success"> Export to Excel</button>
+            </div>
+            <div class="col s2">
+                <button type="submit" click.delegate="popup2()" class="btn btn-lg  btn-block btn-success"> popup2</button>
+            </div>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+        </div>
     </div>
-  </div>
-          
-    
-         
-   <!--<v-grid
+
+
+    <div id="modal2" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Modal Header2</h4> ${myCollection2}
+
+            <v-grid id='vg3' ref='vg3'  style="position:relative;margin-left:25px;width:%; height:500px" row-height="25" header-height="50"
+            resizable-headers="true" sortable-headers="true" sort-on-header-click="true" header-filter="true" header-filter-onkeydown="true"
+            header-filter-not-to="phone" header-filter-top="true" multi-select="true" config="current-entity.bind:myCurrentEntity2; collection.bind:myCollection2 ">
+                <v-grid-row>
+                    <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
+                    <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
+                    <v-grid-col col-width="160" attribute="country" header="Country" default-filter="="></v-grid-col>
+                    <v-grid-col col-width="150" attribute="email" header="Email" default-filter="*"></v-grid-col>
+                    <v-grid-col col-width="160" attribute="color" header="Color" default-filter="=*"></v-grid-col>
+                </v-grid-row>
+            </v-grid>
+        </div>
+        <div class="modal-footer">
+            <div class="col s2">
+                <button type="submit" click.delegate="exportContacts2()" class="btn btn-lg  btn-block btn-success"> Export to Excel</button>
+            </div>
+
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+        </div>
+    </div>
+
+
+
+    <!--<v-grid
         style="position:relative;margin-left:25px;width:%; height:500px"
         row-height="25"
         header-height="50"
@@ -110,23 +156,23 @@
         <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
     </v-grid-row>
 </v-grid>-->
-  <!--</section>-->
-  <div id="modal101x" class="modal modal-fixed-footer">
-          <div class="modal-content">
+    <!--</section>-->
+    <div id="modal101x" class="modal modal-fixed-footer">
+        <div class="modal-content">
 
             <div class="row">
-              <div class="col s3">
+                <div class="col s3">
 
-                <span style='color:#c7c0c5 '> m101</span>
+                    <span style='color:#c7c0c5 '> m101</span>
 
-              </div>
-             
+                </div>
 
-             
+
+
             </div>
-            
-           
-  <!--<v-grid
+
+
+            <!--<v-grid
         style="position:relative;margin-left:25px;width:%; height:500px"
         row-height="25"
         header-height="50"
@@ -149,8 +195,8 @@
       
     </v-grid-row>
 </v-grid>-->
-          
-        <!--<v-grid ref='v1'
+
+            <!--<v-grid ref='v1'
         style="position:relative;margin-left:25px;width:%; height:500px"
         row-height="25"
         header-height="50"
@@ -170,14 +216,14 @@
         <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
         <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
     </v-grid-row> -->
-          </div>
-          <div class="modal-footer">
-         <span class="col s12">
+        </div>
+        <div class="modal-footer">
+            <span class="col s12">
             <h4>
               <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
             </h4>
             </span>
-          </div>
         </div>
- 
+    </div>
+
 </template>

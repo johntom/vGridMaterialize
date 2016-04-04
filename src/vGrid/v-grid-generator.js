@@ -47,9 +47,7 @@ export class VGridGenerator {
       resizableHeadersAndRows: options.resizableHeadersAndRows,             //adds resizable columns to rows, if isResizableHeaders is enabled, this will not be that smooth
       isMultiSelect: options.isMultiSelect,                                 // if multiselect, undefined = none, false = 1, true = multi
       renderOnScrollbarScroll: options.renderOnScrollbarScroll,             //will not wait on scrollbars scrolls
-      columnWidthArrayOverride: options.columnWidthArrayOverride,           //will set row to 100% and dont care about columns array
-      //selection: {},                                                        //  internal, where I store the new selection I create, gets created later
-      //$selectedRows: [],                                                    //internal for selection
+      columnWidthArrayOverride: options.columnWidthArrayOverride,           //will set row to 100% and dont care about columns array       //internal for selection
       lockedColumns: options.lockedColumns || 0,                            //will give huge performance issue in IE
       sortOrder: [],
       contentHeight: 0,                                                     //internal
@@ -93,6 +91,8 @@ export class VGridGenerator {
         //onquery from header filter
         onFilterRun: options.onFilterRun || function () {
         },
+        onScrolled: options.onScrolled || function () {
+        },
         getFilterName: options.getFilterName || function () {
           return "";
         },
@@ -106,7 +106,8 @@ export class VGridGenerator {
         lastScrollLeft: 0,    //used for stopping weird scrolling to left
         halt: false,          //used for knowing if we can update when doing scrolling, used with time var under
         timer: null,          //timer for stopping updating, "getDataScrollDelay" is the timeout for this
-        clickTimersArray: []  //this is the array of touch events, have it here so I can cancel during scroll
+        clickTimersArray: [],  //this is the array of touch events, have it here so I can cancel during scroll
+        scrollCallbackTimer : null
       },
       atts: { //different attributes used
         dataAttribute: "v-grid-data-attribute",
@@ -204,6 +205,7 @@ export class VGridGenerator {
             var asc = x.asc === true ? isAsc : isDesc;
             var main = `<span ${lineHeigthStyleTag} class="${this._private.css.sortIcon} ${this._private.css.sortIconNo}${x.no}">`;
             var end = '</span>';
+
             result = main + end + asc;
           }
         });
@@ -295,8 +297,7 @@ export class VGridGenerator {
       } else {
         for (var i = 0; i < attributeNamesArray.length; i++) {
           rowTemplate = rowTemplate +
-            //`<div><div class="${this._private.css.cellContent}" style="${this._private.colStyleArray[i]}" ${this._private.atts.dataAttribute}="${attributeNamesArray[i]}">{{${attributeNamesArray[i]}}}</div></div>`;
-            `<div><input class="${this._private.css.cellContent}" tabindex="0" readonly="true" style="${this._private.colStyleArray[i]}" ${this._private.atts.dataAttribute}="${attributeNamesArray[i]}" value="{{${attributeNamesArray[i]}}}" ></input></div>`;
+             `<div><input class="${this._private.css.cellContent}"  readonly="true" style="${this._private.colStyleArray[i]}" ${this._private.atts.dataAttribute}="${attributeNamesArray[i]}" value="{{${attributeNamesArray[i]}}}" ></input></div>`;
         }
       }
     }
@@ -699,6 +700,8 @@ export class VGridGenerator {
           container.style.width = "100%"
         }
 
+        rowHtmlElement.setAttribute("row",rowNo);
+
         //create markup
         var innerHtml = "";
         if (entity) {
@@ -838,13 +841,14 @@ export class VGridGenerator {
 
       var dragHandle = this._private.isSortableHeader ? this._private.css.dragHandle : "";
 
-      var cssLabel = `${this._private.css.cellContent} ${this._private.css.filterLabelBottom} ${dragHandle} ${this._private.css.orderHandle}`;
+      var cssLabel = `${this._private.css.cellContent} ${this._private.css.filterLabelTop} ${dragHandle} ${this._private.css.orderHandle}`;
       var cssInput = `${this._private.css.cellContent} ${this._private.css.filterInputBottom} ${this._private.css.filterHandle}`;
 
       if (this._private.queryHelper.filterOnAtTop) {
-        cssLabel = `${this._private.css.cellContent} ${this._private.css.filterLabelTop} ${dragHandle} ${this._private.css.orderHandle}`;
+        cssLabel = `${this._private.css.cellContent} ${this._private.css.filterLabelBottom} ${dragHandle} ${this._private.css.orderHandle}`;
         cssInput = `${this._private.css.cellContent} ${this._private.css.filterInputTop} ${this._private.css.filterHandle}`;
       }
+
 
       //get sort icon
       var sortIcon = this.getSortIcon(attribute);
@@ -1234,7 +1238,7 @@ export class VGridGenerator {
 
       }
     };
-
+    clearTimeout(this._private.scrollVars.scrollCallbackTimer)
     if (this._private.requestAnimationFrame) {
       requestAnimationFrame(() => {
         doScroll();
@@ -1242,39 +1246,11 @@ export class VGridGenerator {
     } else {
       doScroll();
     }
+    this._private.scrollVars.scrollCallbackTimer = setTimeout(()=>{
+      this._private.configFunctions.onScrolled();
+    },250)
 
   }; //end scroll event
-
-
-
-
-
-  /****************************************************************************************************************************
-   * used with click event to get row number of the one click on
-   ****************************************************************************************************************************/
-  getRowNumberFromClickedOn(e) {
-    var thisTop;
-    var x = 10;
-    var node = e.target;
-    for (var i = 0; i < x; i++) {
-      try {
-        //21 march fix, will get bad result if I do it any other way
-        if (node.classList.contains(this._private.css.row)) {
-          for (var y = 0; y < this._private.htmlCache.rowsArray.length; y++) {
-            if (node.style.transform === this._private.htmlCache.rowsArray[y].div.style.transform) {
-              thisTop = this._private.htmlCache.rowsArray[y].top;
-            }
-          }
-        }
-        node = node.offsetParent;
-      } catch (x) {
-      }
-    }
-
-    var rowHeight = this._private.rowHeight;
-    var currentRow = Math.round(thisTop / rowHeight);
-    return currentRow;
-  };
 
 
 
@@ -1500,8 +1476,6 @@ export class VGridGenerator {
 
 
 
-
-
   /****************************************************************************************************************************
    * add the events  (TODO: when cleaning up code I need to splitt the stuff in here into more functions..)
    ****************************************************************************************************************************/
@@ -1510,10 +1484,10 @@ export class VGridGenerator {
     /*------------------------------------------------*/
     //normal click
     var handleClick = (e) => {
-      var currentRow = this.getRowNumberFromClickedOn(e);
+      var currentRow = parseInt(e.currentTarget.getAttribute("row"));
       this._private.configFunctions.clickHandler(e, currentRow);
       if (this._private.isMultiSelect !== undefined) {
-        this.vGridSelection.setHightlight(e, this);
+        this.vGridSelection.setHightlight(e, currentRow, this);
       }
     };
 
@@ -1521,10 +1495,10 @@ export class VGridGenerator {
     /*------------------------------------------------*/
     //doubleclick
     var handleDblClick = (e) => {
-      var currentRow = this.getRowNumberFromClickedOn(e);
+      var currentRow = parseInt(e.currentTarget.getAttribute("row"));
       this._private.configFunctions.clickHandler(e, currentRow);
       if (this._private.isMultiSelect !== undefined) {
-        this.vGridSelection.setHightlight(e, this);
+        this.vGridSelection.setHightlight(e.target, currentRow, this);
       }
     };
 
@@ -1662,8 +1636,7 @@ export class VGridGenerator {
    ****************************************************************************************************************************/
   fixHeaderWithBody() {
     var currentScrollLeft = this._private.htmlCache.content.scrollLeft;
-    var header = this._private.htmlCache.header.children[0].children[0];
-    header.style.left = -currentScrollLeft + "px";
+    this._private.htmlCache.header.scrollLeft = currentScrollLeft;
     if (this._private.lockedColumns > 0) { //todo in own function, its used a few places now
       //this have super bad performance in IE...
       currentScrollLeft = this._private.htmlCache.content.scrollLeft; //need the updated one...
@@ -1746,7 +1719,7 @@ export class VGridGenerator {
     this.correctRowAndScrollbodyWidth();
     this.updateSelectionOnAllRows();
     this.fixHeaderWithBody();
-    this.onNormalScrollingLarge();//
+    this.onNormalScrollingLarge();
     this.fillDataInRows(true);
     if (scrollBottom) {
       this._private.htmlCache.content.scrollTop = this._private.htmlCache.content.scrollTop + this._private.rowHeight

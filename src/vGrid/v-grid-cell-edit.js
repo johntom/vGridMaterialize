@@ -9,7 +9,7 @@ export class VGridCellEdit {
 
   //vars;
   first = -1;
-  last= -1;
+  last = -1;
   editMode = false;
   parent = null;
   element = null;
@@ -29,10 +29,10 @@ export class VGridCellEdit {
     var node = e;
     for (var i = 0; i < x; i++) {
       try {
-        //21 march fix, will get bad result if I do it any other way
         if (node.classList.contains(this._private.css.row)) {
+          var row = parseInt(node.getAttribute("row"));
           for (var y = 0; y < this._private.htmlCache.rowsArray.length; y++) {
-            if (node.style.transform === this._private.htmlCache.rowsArray[y].div.style.transform) {
+            if (row === (this._private.htmlCache.rowsArray[y].top/this._private.rowHeight)) {
               thisTop = this._private.htmlCache.rowsArray[y + direction].top;
               element = this._private.htmlCache.rowsArray[y + direction].div;
             }
@@ -42,8 +42,6 @@ export class VGridCellEdit {
       } catch (x) {
       }
     }
-    //var rowHeight = this._private.rowHeight;
-    //var currentRow = Math.round(thisTop / rowHeight);
     if (element) {
       this.cells = element.querySelectorAll("." + this._private.css.cellContent);
     }
@@ -80,7 +78,10 @@ export class VGridCellEdit {
       'cancelable': true
     });
     this.setAsSingleClick = true;
-    this.cells[index].dispatchEvent(event);
+    if(this.cells[index]){
+      this.cells[index].dispatchEvent(event);
+    }
+
   }
 
 
@@ -98,9 +99,6 @@ export class VGridCellEdit {
   addGridKeyListner() {
 
     this.element.onkeydown = function (e) {
-
-      //console.log(e.keyCode);
-
 
 
       //page up
@@ -133,8 +131,6 @@ export class VGridCellEdit {
               this.setCellsFromTopValue(newTop);
               this.dispatchCellClick(this.index);
             }, 100)
-
-
           }
         });
       }
@@ -149,7 +145,6 @@ export class VGridCellEdit {
             var currentscrolltop = this.gridCtx.getScrollTop();
 
             //get content height/rows
-
             var rowHeight = this._private.rowHeight;
             var containerHeight = this._private.htmlCache.content.clientHeight;
             var containerRows = parseInt(containerHeight / rowHeight, 10);
@@ -321,7 +316,40 @@ export class VGridCellEdit {
     };
   }
 
+  setBackFocus() {
+    if (this.curElement) {
+      var rowNo = this.parent.filterRow;
+      var rowheight = this._private.rowHeight;
+      this.setCellsFromTopValue(rowNo * rowheight);
+      if(this.cells.length > 0){
+      this.curElement = this.cells[this.index];
 
+        //this.curElement.focus();
+        //this.dispatchCellClick(this.index);//better this way, if they scroll down to cell, its ready for beeing used with away
+        if (!this.cells[this.index].classList.contains(this._private.css.editCell)) {
+          this.cells[this.index].classList.add(this._private.css.editCell)
+        }
+
+        if (!this.cells[this.index].classList.contains(this._private.css.editCellWrite)) {
+          this.cells[this.index].classList.add(this._private.css.editCellWrite)
+        }
+
+        if(this.editMode){
+          if(this.readOnly === false){
+            if (this.cells[this.index].classList.contains(this._private.css.editCellFocus)) {
+              this.cells[this.index].classList.remove(this._private.css.editCellFocus);
+            }
+            this.cells[this.index].removeAttribute("readonly");//if I dont do this, then they cant enter
+          } else {
+            this.cells[this.index].classList.add(this._private.css.editCellFocus);
+          }
+        }else {
+          this.cells[this.index].classList.add(this._private.css.editCellFocus);
+        }
+      }
+
+    }
+  }
 
 
   editCellhelper(e, readOnly, callbackDone, callbackKey) {
@@ -332,6 +360,11 @@ export class VGridCellEdit {
     }
 
     if (e.target.classList.contains(this._private.css.cellContent)) {
+
+      if (this.curElement) {
+        this.removeEditCssClasses(this.curElement);
+      }
+
 
       this.curElement = e.target;
       this.readOnly = readOnly;
@@ -367,14 +400,19 @@ export class VGridCellEdit {
         this.first = false;
       }
 
+      if (!e.target.classList.contains(this._private.css.editCell)) {
+        e.target.classList.add(this._private.css.editCell)
+      }
 
-      e.target.classList.add(this._private.css.editCell);
-      e.target.classList.add(this._private.css.editCellWrite);
+      if (!e.target.classList.contains(this._private.css.editCellWrite)) {
+        e.target.classList.add(this._private.css.editCellWrite)
+      }
+
 
 
       if (this.type === "dblclick" || this.editMode) {
         this.editMode = true;
-        if(this.readOnly === false){
+        if (this.readOnly === false) {
           if (e.target.classList.contains(this._private.css.editCellFocus)) {
             e.target.classList.remove(this._private.css.editCellFocus);
           }
