@@ -2,7 +2,7 @@
     <require from="../vGrid/v-grid.css"></require>
     <require from="../vGrid/v-grid.js"></require>
     <!--<section class="au-animate section no-pad-bot">-->
-    <h2>  vGrid materialzie modal within modal version:1.0.1</h2>
+    <h2>  vGrid materialzie modal within modal version:1.0.2</h2>
     <div class="row">
         <div class="col s2">
             <button type="submit" click.delegate="popup()" class="btn btn-lg  btn-block btn-success"> popup</button>
@@ -11,12 +11,12 @@
             <button type="submit" click.delegate="popup2()" class="btn btn-lg  btn-block btn-success"> popup2</button>
         </div>
     </div>
-    <v-grid id='vg1' ref='vg1' style="position:relative;margin-left:25px;width:%; height:250px" 
+    <v-grid id='grid1' ref='grid1' style="position:relative;margin-left:25px;width:%; height:250px" 
     row-height="25" header-height="50" resizable-headers="true"
     sortable-headers="true" sort-on-header-click="true" header-filter="true" 
     header-filter-onkeydown="true" header-filter-not-to="phone"
     header-filter-top="true" multi-select="true"
-    config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
+    config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ; grid-context.bind:grid1">
 
         <v-grid-row>
             <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
@@ -81,10 +81,10 @@
         <div class="modal-content">
              <h5>Modal Header1</h5> 
 
-            <v-grid   style="position:relative;margin-left:25px;width:%; height:400px" row-height="25" header-height="50" resizable-headers="true"
+            <v-grid id='grid2' ref='grid2'  style="position:relative;margin-left:25px;width:%; height:400px" row-height="25" header-height="50" resizable-headers="true"
             sortable-headers="true" sort-on-header-click="true" header-filter="true" header-filter-onkeydown="true" header-filter-not-to="phone"
             header-filter-top="true" multi-select="true" row-on-draw="onRowDraw" 
-            config="current-entity.bind:myCurrentEntity1; collection.bind:myCollection1;  grid-context.bind:grid1">
+            config="current-entity.bind:myCurrentEntity1; collection.bind:myCollection1;  grid-context.bind:grid2">
               <v-grid-row>
                     <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
                     <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
@@ -108,12 +108,12 @@
 
     <div id="modal2" class="modal modal-fixed-footer">
         <div class="modal-content">
-            <h4>Modal Header2</h4> ${myCollection2}
+            <h4>Modal Header2</h4>
 
-            <v-grid   style="position:relative;margin-left:25px;width:%; height:400px" row-height="25" header-height="50"
+            <v-grid   id='grid3' ref='grid3' style="position:relative;margin-left:25px;width:%; height:400px" row-height="25" header-height="50"
             resizable-headers="true" sortable-headers="true" sort-on-header-click="true" header-filter="true" header-filter-onkeydown="true"
             header-filter-not-to="phone" header-filter-top="true" multi-select="true"
-             config="current-entity.bind:myCurrentEntity2; collection.bind:myCollection2;  grid-context.bind:grid2">
+             config="current-entity.bind:myCurrentEntity2; collection.bind:myCollection2;  grid-context.bind:grid3">
                 <v-grid-row>
                     <v-grid-col col-width="150" attribute="index" header="Index" default-filter=">=" read-only="true"></v-grid-col>
                     <v-grid-col col-width="150" attribute="name" header="Name" default-filter="*="></v-grid-col>
@@ -134,95 +134,5 @@
 
 
 
-    <!--<v-grid
-        style="position:relative;margin-left:25px;width:%; height:500px"
-        row-height="25"
-        header-height="50"
-        resizable-headers="true"
-        sortable-headers="true"
-        sort-on-header-click="true"
-        header-filter="true"
-        header-filter-onkeydown="true"
-        header-filter-not-to="phone"
-        header-filter-top="true"
-        multi-select="true"
-        config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
-    <v-grid-row>
-        <v-grid-col col-width="150" attribute="index"   header="Index"    default-filter=">=" read-only="true"></v-grid-col>
-        <v-grid-col col-width="150" attribute="name"    header="Name"     default-filter="*="                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="country" header="Country"  default-filter="="                  ></v-grid-col>
-        <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
-        <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
-    </v-grid-row>
-</v-grid>-->
-    <!--</section>-->
-    <div id="modal101x" class="modal modal-fixed-footer">
-        <div class="modal-content">
-
-            <div class="row">
-                <div class="col s3">
-
-                    <span style='color:#c7c0c5 '> m101</span>
-
-                </div>
-
-
-
-            </div>
-
-
-            <!--<v-grid
-        style="position:relative;margin-left:25px;width:%; height:500px"
-        row-height="25"
-        header-height="50"
-        resizable-headers="true"
-        sortable-headers="true"
-        sort-on-header-click="true"
-        header-filter="true"
-        header-filter-onkeydown="true"
-        header-filter-not-to="phone"
-        header-filter-top="true"
-        multi-select="true"
-        config="current-entity.bind:myCurrentEntity; collection.bind:lists ">
-    <v-grid-row>
-        <v-grid-col col-width="150" attribute="Floors"   header="Floors"    default-filter=">=" read-only="true"></v-grid-col>
-        <v-grid-col col-width="150" attribute="Projects"    header="Projects"     default-filter="*="                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="Description" header="Description"  default-filter="="                  ></v-grid-col>
-        <v-grid-col col-width="150" attribute="doccount"   header="Stage"    default-filter="*"                  ></v-grid-col>
-        <v-grid-col col-width="160" attribute="BCSNumber"   header="BCSNumber"    default-filter="=*"                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="ProjectStartDate"   header="StartDate"    default-filter="=*"                 ></v-grid-col>
-      
-    </v-grid-row>
-</v-grid>-->
-
-            <!--<v-grid ref='v1'
-        style="position:relative;margin-left:25px;width:%; height:500px"
-        row-height="25"
-        header-height="50"
-        resizable-headers="true"
-        sortable-headers="true"
-        sort-on-header-click="true"
-        header-filter="true"
-        header-filter-onkeydown="true"
-        header-filter-not-to="phone"
-        header-filter-top="true"
-        multi-select="true"
-        config="current-entity.bind:myCurrentEntity; collection.bind:myCollection ">
-    <v-grid-row>
-        <v-grid-col col-width="150" attribute="index"   header="Index"    default-filter=">=" read-only="true"></v-grid-col>
-        <v-grid-col col-width="150" attribute="name"    header="Name"     default-filter="*="                 ></v-grid-col>
-        <v-grid-col col-width="160" attribute="country" header="Country"  default-filter="="                  ></v-grid-col>
-        <v-grid-col col-width="150" attribute="email"   header="Email"    default-filter="*"                  ></v-grid-col>
-        <v-grid-col col-width="160" attribute="color"   header="Color"    default-filter="=*"                 ></v-grid-col>
-    </v-grid-row> -->
-        </div>
-        <div class="modal-footer">
-            <span class="col s12">
-            <h4>
-              <span style='color:#c7c0c5 ;margin-left:20px;'>Address:</span> ${head} <a href="#!" class="right modal-action modal-close waves-effect waves-green btn-flat ">Close</a>
-            </h4>
-            </span>
-        </div>
-    </div>
 
 </template>
