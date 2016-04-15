@@ -13,6 +13,7 @@ constructor(){
   this.first = [];
   this.last = [];
   this.image = [];
+   this.image2 = [];
   this.expanded = [];
   this.guid = [];
   this.integer = [];
@@ -31,6 +32,7 @@ constructor(){
   this.email = [];
   this.phone = [];
   this.color = [];
+  this.number = []
 
   for(let i = 0; i < this.internalDataArray.length;i++){
     this.index.push(this.internalDataArray[i].index);
@@ -38,12 +40,13 @@ constructor(){
     this.first.push(this.internalDataArray[i].first);
     this.last.push(this.internalDataArray[i].last);
     this.image.push(this.internalDataArray[i].image);
+     this.image2.push(this.internalDataArray[i].image);
     this.expanded.push(this.internalDataArray[i].expanded);
     this.guid.push(this.internalDataArray[i].guid);
     this.integer.push(this.internalDataArray[i].integer);
     this.shortText.push(this.internalDataArray[i].shortText);
     this.expanded.push(this.internalDataArray[i].expanded);
-    this.date.push(this.internalDataArray[i].date);
+    this.date.push(new Date(this.internalDataArray[i].date).toISOString());
     this.shortText.push(this.internalDataArray[i].shortText);
     this.mediumText.push(this.internalDataArray[i].mediumText);
     this.longText.push(this.internalDataArray[i].longText);
@@ -56,6 +59,7 @@ constructor(){
     this.email.push(this.internalDataArray[i].email);
     this.phone.push(this.internalDataArray[i].phone);
     this.color.push(this.internalDataArray[i].color);
+    this.number.push(parseFloat((Math.floor(Math.random() * 500) + 0)) +"."+(Math.floor(Math.random() * 500) + 0));
   }
 }
 
@@ -77,27 +81,30 @@ generateData(number, callback){
     let random5 = Math.floor(Math.random() * 500) + 0;
 
 
+    
     dummyArray.push({
       "index": this.totalGenerated,
-      "name": this.internalDataArray[random2].first +" "+this.internalDataArray[random3].last,
-      "first": this.internalDataArray[random2].first,
-      "last": this.internalDataArray[random3].last,
-      "image": this.internalDataArray[random4].image,
-      "expanded": this.internalDataArray[random5].expanded,
-      "guid": this.internalDataArray[random1].guid,
-      "integer": this.internalDataArray[random2].integer,
-      "date": this.internalDataArray[random3].date,
-      "shortText": this.internalDataArray[random4].shortText,
-      "mediumText": this.internalDataArray[random5].mediumText,
-      "longText": this.internalDataArray[random1].longText,
-      "address": this.internalDataArray[random2].address,
-      "city": this.internalDataArray[random3].city,
-      "state": this.internalDataArray[random4].state,
-      "zip": this.internalDataArray[random5].zip,
-      "country": this.internalDataArray[random1].country,
-      "email": this.internalDataArray[random2].email,
-      "phone": this.internalDataArray[random3].phone,
-      "color": this.internalDataArray[random4].color
+      "name": this.first[random2] +" "+this.last[random3],
+      "first": this.first[random2],
+      "last": this.last[random3],
+      "image": this.image[random4],
+      "imag2": this.image[random4],
+      "expanded": this.expanded[random5],
+      "guid": this.guid[random1],
+      "integer": this.integer[random2],
+      "date": this.date[random3],
+      "shortText": this.shortText[random4],
+      "mediumText": this.mediumText[random5],
+      "longText": this.longText[random1],
+      "address": this.address[random2],
+      "city": this.city[random3],
+      "state": this.state[random4],
+      "zip": this.zip[random5],
+      "country": this.country[random1],
+      "email": this.email[random2],
+      "phone": this.phone[random3],
+      "color": this.color[random4],
+      "number": this.number[random4]
     });
   }
 
@@ -118,6 +125,7 @@ internalDataArray = [
         "first": "Isabel",
         "last": "Conrad",
         "image": "https://s3.amazonaws.com/uifaces/faces/twitter/enda/73.jpg",
+        "image2": "https://s3.amazonaws.com/uifaces/faces/twitter/enda/73.jpg",
         "expanded": false,
         "guid": "8ea90ed8-83e1-4a28-a371-e5c0e1d0e021",
         "integer": 28,
@@ -140,6 +148,7 @@ internalDataArray = [
         "first": "Jocelyn",
         "last": "Wooten",
         "image": "https://s3.amazonaws.com/uifaces/faces/twitter/guillogo/73.jpg",
+         "image2": "https://s3.amazonaws.com/uifaces/faces/twitter/guillogo/73.jpg",
         "expanded": false,
         "guid": "7017f9b1-690e-4c9d-8eee-f63285ca5148",
         "integer": 10,
@@ -7136,7 +7145,8 @@ internalDataArray = [
         "first": "Boyle",
         "last": "Schmidt",
         "image": "https://s3.amazonaws.com/uifaces/faces/twitter/thewillbeard/73.jpg",
-        "expanded": false,
+       "image2": "https://s3.amazonaws.com/uifaces/faces/twitter/thewillbeard/73.jpg",
+         "expanded": false,
         "guid": "17ce3452-2b9d-4fe3-b1db-7009a74b7e32",
         "integer": 69,
         "date": "Sat May 18 1996 00:26:16 GMT-0700 (PDT)",

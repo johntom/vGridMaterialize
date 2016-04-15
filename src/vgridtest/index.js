@@ -47,7 +47,45 @@ export class Vgridtest {
     grid2 = {};
     grid3 = {};
  
+    /*
+    this.createReport(this.grid1, this.myCollection);
+createReport (grid, collection){
+
+     //dont thouch this;
+     var content = ''
+     var rows = grid.ctx.getGridRows()
+     var attributes = grid.ctx._private.attributeArray;
+
+     //sets data to our content
+     var setData = (arr) =>{
+       content = content + arr.join(';')+'\n';
+     }
+
+     //set headers
+     setData(attributes);
+
+     //loop rows/columns
+     rows.forEach((row)=>{
+         let tempArr = [];
+         attributes.forEach((att)=>{
+             tempArr.push(collection[row][att]);
+         });
+         setData(tempArr)
+     })
+     //set total
+     content = content + 'Total rows:'+rows.length+'\n';
+
+     //download
+     var dummyElement = document.createElement('a');
+     dummyElement.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+     dummyElement.setAttribute('download', 'contacts.csv');
+     dummyElement.style.display = 'none';
+     document.body.appendChild(dummyElement);
+     dummyElement.click();
+     document.body.removeChild(dummyElement);
+   }
     
+     */
     
     /********************************************************************
      * Constructor
@@ -112,7 +150,41 @@ export class Vgridtest {
         $('#modal2').openModal();
         this.grid3.ctx.redrawGrid();
     }
-  
+    onDblClick(row) {
+        alert('row ' + row + ' ' + this.myCollection[row].name)
+        console.log("dblclick row:" + row)
+    }
+ onRowDraw (data, collectionData) {
+   if (data) {
+       if (data.country === "Angola" || data.country === "Andorra"  ) {
+//         data.myCustomColor = "rgba(150,72,230, 0.3)"
+       }
+//     //  data.date = this.formatDate(data.date)
+//     //  data.number = Math.round(data.number)
+   }
+   }
+    onCellDraw(data) {
+        if (data) {
+            if (data.attributeName === "image") {
+                data.div.lastChild.type = "button";
+                var myData = data;
+                data.div.lastChild.onmouseup = function (e) {
+                    //tabbing generates click event, so need to use something else..
+                    //wrapping it in could also solve this issue
+                    alert("you clicked me")
+                }.bind({ that: this, data: data })
+            }
+            if (data.attributeName === "image2") {
+                data.div.lastChild.type = "button";
+                var myData = data;
+                data.div.lastChild.onmouseup = function (e) {
+                    //tabbing generates click event, so need to use something else..
+                    //wrapping it in could also solve this issue
+                    alert("you clicked me2")
+                }.bind({ that: this, data: data })
+            }
+        }
+    }
     //http://tutaurelia.net/2016/01/10/export-data-to-excel-from-an-aurelia-web-application/
     // exportContactsnofilter() {
     //     this.ctr = 1;
@@ -167,7 +239,7 @@ export class Vgridtest {
         pom.click();
         document.body.removeChild(pom);
     }
-    
+
 
 }
 
